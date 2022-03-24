@@ -1,0 +1,155 @@
+import itertools
+import json
+from builtins import dict
+from itertools import *
+from pydoc import doc
+
+""" esta es nuestra clase molde esta nos permite modelar el comportamiento que vamos a parametrizar mas adelante"""
+
+
+class Persona:
+
+    def __init__(self, nombre, sexo, dominio):
+        self.__nombre = nombre
+        self.__sexo = sexo
+        self.__dominio = dominio
+
+    def getNombre(self):
+        return self.__nombre
+
+    def getDominio(self):
+        return self.__dominio
+
+    def getSexo(self):
+        return self.__sexo
+
+
+""""esta en la clase donde realizamos las opeciones de combinaciones"""
+
+
+class Combinaciones:
+    a = Persona("Ana", "F", "Alto")
+    b = Persona("Andres", "M", "Alto")
+    c = Persona("Alberto", "M", "Medio")
+    d = Persona("Amanda", "F", "Bajo")
+    e = Persona("Alex", "M", "Bajo")
+    f = Persona("Alexandra", "F", "Medio")
+    g = Persona("Abelardo", "M", "Alto")
+    h = Persona("Alfonso", "M", "Bajo")
+    i = Persona("Abril", "M", "Bajo")
+    j = Persona("Adriana", "F", "Medio")
+    k = Persona("Antonia", "F", "Alto")
+
+    jsonPerson = '{"Personas":{"persona1":{"nombre":"ana","sexo":"F","dominio":"Alto"},"persona2":{"nombre":"Andres","sexo":"M","dominio":"Alto"},"persona3":{"nombre":"Alberto","sexo":"M","dominio":"Medio"},"persona4":{"nombre":"Amanda","sexo":"F","dominio":"Bajo"},"persona5":{"nombre":"Alex","sexo":"M","dominio":"Bajo"},"persona6":{"nombre":"Alexandra","sexo":"F","dominio":"Medio"},"persona7":{"nombre":"Abelardo","sexo":"M","dominio":"Alto"},"persona8":{"nombre":"Alfonso","sexo":"M","dominio":"Bajo"},"persona9":{"nombre":"Abril","sexo":"M","dominio":"Bajo"},"persona10":{"nombre":"Adriana","sexo":"F","dominio":"Medio"},"persona11":{"nombre":"Antonia","sexo":"F","dominio":"Alto"}}}'
+    dicPerson = json.loads(jsonPerson)
+
+    personas2 = []
+    valoresAtributos = []
+
+    for key in dicPerson:
+        for key2 in dicPerson[key]:
+            object = dicPerson[key]
+            contenido = (dicPerson[key][key2])
+            valoresAtributos.clear()
+            for atributo in contenido:
+                ##print(contenido[atributo])
+                valoresAtributos.append(contenido[atributo])
+            personas2.append((Persona((valoresAtributos[0]), (valoresAtributos[1]), (valoresAtributos[2]))))
+
+    personas = [a, b, c, d, e, f, g, h, i, j, k]
+    temp = tuple(combinations(personas, 3))
+    temp2 = tuple(combinations(personas2, 3))
+
+    # en funcion nos permite mostrar las duplas ordenadas
+    def mostrarTupla(list, condicion):
+        for i in range(len(list)):
+            x = []
+            for j in range(condicion):
+                x.append(Persona.getNombre(list[i][j]))
+            print(x)
+
+    # esta funcion nos devuelve una lista filtrada de acuerdo a nuestras necesidades
+    def restriccion(list):
+        x = []
+        for i in range(len(list)):
+            a = 0
+            for j in range(3):
+                if Persona.getSexo(list[i][j]) == "M":
+                    a = a + 1
+            if a >= 3:
+                x.append(list[i])
+        return x
+
+    ## esta funcion nos devulve una tupla con los filtros necesarios
+    def dominioA(list):
+        x = []
+        s = False
+        p = Persona
+        for i in range(len(list)):
+            if Persona.getDominio(list[i]) == "Alto":
+                x.append(list[i])
+                if Persona.getNombre(list[i]) == "Andres":
+                    s = True
+            if Persona.getNombre(list[i]) == "Andres":
+                p = list[i]
+        if not s:
+            x.append(p)
+        return tuple(combinations(x, 2))
+
+    ## esta funcion nos devuelve una lista con un filtro mucho mas especifico
+    def restriccionDominio(list, condicion):
+        x = []
+        for i in range(len(list)):
+            a = 0
+            for j in range(condicion):
+                if Persona.getNombre(list[i][j]) == "Andres":
+                    a = a + 1
+            if a >= 1:
+                x.append(list[i])
+        return x
+
+    z = restriccionDominio(dominioA(personas), 2)
+    y = restriccionDominio(dominioA(personas2),2)
+
+    ##mostrarTupla(restriccion(temp),3)
+    ##print("------------")
+    ##mostrarTupla(restriccion(temp2),3)
+
+    ##print(len(restriccion(temp)))
+    ##print(restriccion(temp))
+    ##print(mostrarTupla(temp,3));
+    ##mostrarTupla(restriccion(temp),3);
+    ##mostrarTupla(dominioA(personas),2);
+
+    mostrarTupla(z,2)
+    print("--------")
+    mostrarTupla(y,2)
+    ##print(len(z))
+
+
+class Secuencia:
+
+    def secuenciaTriangular(x):
+        a = 1
+        for i in range(1, x):
+            a = a + i + 1
+        return a
+
+    def secuanciaCuadrado(x):
+        return pow(x, 2)
+
+    ##print(secuenciaTriangular(7))
+    ##print(secuanciaCuadrado(7))
+
+
+class recurencia:
+
+    def recurrencia1(x):
+        return round(pow(-1, x) * (3 / 7) + pow(6, x) * (4 / 7))
+
+    ##print(recurrencia1(3))
+
+    def recurrencia2(x):
+        return round(pow(-3, x) * (-1 / 10) + pow(7, x) * (1 / 10))
+
+    ##print(recurrencia2(11))
